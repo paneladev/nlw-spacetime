@@ -1,0 +1,38 @@
+
+# dependencies
+/web/node_modules
+/web/.pnp
+/web.pnp.js
+
+/server/node_modules
+/server/.env
+
+
+# testing
+/web/coverage
+
+# next.js
+/web/.next/
+/web/out/
+
+# production
+/web/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+/web/npm-debug.log*
+/web/yarn-debug.log*
+/web/yarn-error.log*
+
+# local env files
+/web/.env*.local
+
+# vercel
+/web/.vercel
+
+# typescript
+/web/*.tsbuildinfo
+/web/next-env.d.ts
