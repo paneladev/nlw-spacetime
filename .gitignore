@@ -36,3 +36,17 @@
 # typescript
 /web/*.tsbuildinfo
 /web/next-env.d.ts
+
+#Spring + IntelliJIDE
+
+server-java-spring/HELP.md
+server-java-spring/target/
+server-java-spring/!.mvn/wrapper/maven-wrapper.jar
+server-java-spring/!**/src/main/**/target/
+server-java-spring/!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+server-java-spring/.idea
+server-java-spring/*.iws
+server-java-spring/*.iml
+server-java-spring/*.ipr

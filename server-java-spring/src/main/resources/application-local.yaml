@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nlw-spacetime
+    username: postgres
+    password: postgres
+    driver-class: org.postgresql.Driver
