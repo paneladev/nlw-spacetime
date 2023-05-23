@@ -24,6 +24,9 @@ public class Memory {
     @Column(name = "cover_url")
     private String coverUrl;
 
+    @Column(name = "cover_image")
+    private byte[] coverImage;
+
     @Column(name = "is_public")
     private boolean isPublic;
 

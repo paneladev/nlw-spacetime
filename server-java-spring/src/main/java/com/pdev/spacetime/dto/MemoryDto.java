@@ -14,6 +14,7 @@ public class MemoryDto {
 
     private Long id;
     private String coverUrl;
+    private byte[] coverImage;
     private String excerpt;
     private LocalDateTime createdAd;
 
@@ -23,6 +24,7 @@ public class MemoryDto {
                 .coverUrl(memory.getCoverUrl())
                 .excerpt(memory.getContent())
                 .createdAd(memory.getCreatedAt())
+                .coverImage(memory.getCoverImage())
                 .build();
 
     }

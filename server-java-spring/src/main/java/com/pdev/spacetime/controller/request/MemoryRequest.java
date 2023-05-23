@@ -14,4 +14,5 @@ public class MemoryRequest {
     private String content;
     private String coverUrl;
     private boolean isPublic;
+    private byte[] image;
 }

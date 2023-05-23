@@ -35,4 +35,8 @@ public class User {
     @JsonManagedReference
     private List<Memory> memories;
 
+    public User(Long id) {
+        this.id = id;
+    }
+
 }

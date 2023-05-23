@@ -10,6 +10,7 @@ CREATE TABLE memory (
     id serial PRIMARY KEY,
     content text,
     cover_url varchar(255),
+    cover_image bytea,
     is_public boolean default false,
     created_at timestamp,
     user_id int,

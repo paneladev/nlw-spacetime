@@ -3,6 +3,7 @@ package com.pdev.spacetime.service;
 import com.pdev.spacetime.controller.request.MemoryRequest;
 import com.pdev.spacetime.dto.MemoryDto;
 import com.pdev.spacetime.entity.Memory;
+import com.pdev.spacetime.entity.User;
 import com.pdev.spacetime.repository.MemoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +45,13 @@ public class MemoryService {
     public void saveMemory(MemoryRequest memoryRequest) {
         Memory memory = new Memory();
         memory.setContent(memoryRequest.getContent());
-        memory.setCoverUrl(memoryRequest.getCoverUrl());
+        //memory.setCoverUrl(memoryRequest.getCoverUrl());
         memory.setPublic(memoryRequest.isPublic());
         memory.setCreatedAt(LocalDateTime.now());
+        memory.setCoverImage(memoryRequest.getImage());
+
+        // receber o usuario dinamicamente
+        memory.setUser(new User(2L));
 
         memoryRepository.save(memory);
     }
