@@ -21,7 +21,9 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class AuthorizationFilterConfig extends OncePerRequestFilter {
 
+    private final LoggedUserConfig loggedUserConfig;
     private final ApplicationProperties applicationProperties;
+
     private static final String BEARER = "Bearer ";
 
     private static final String[] AUTH_WHITELIST = {"/register"};
@@ -35,23 +37,19 @@ public class AuthorizationFilterConfig extends OncePerRequestFilter {
             try {
                 String token = authorizationHeader.substring(BEARER.length());
                 Algorithm algorithm = Algorithm.HMAC256(applicationProperties.getJwtSecret());
-
                 JWTVerifier verifier = JWT.require(algorithm).build();
-
                 DecodedJWT verify = verifier.verify(token);
 
-                String userId = verify.getSubject();
-
-                // TODO setar os dados do usuario de forma global para ter acesso nas services
+                LoggedUser loggedUser = loggedUserConfig.loggedUser();
+                loggedUser.setId(Long.parseLong(verify.getSubject()));
+                loggedUser.setName(verify.getClaim("name").asString());
 
                 filterChain.doFilter(request, response);
             } catch (Exception ex) {
                 refuseRequest(response);
             }
         } else {
-            boolean contains = Arrays.asList(AUTH_WHITELIST).contains(request.getRequestURI());
-
-            if (!contains) {
+            if (!Arrays.asList(AUTH_WHITELIST).contains(request.getRequestURI())) {
                 refuseRequest(response);
             } else {
                 filterChain.doFilter(request, response);
