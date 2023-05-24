@@ -1,5 +1,6 @@
 package com.pdev.spacetime.controller;
 
+import com.pdev.spacetime.config.LoggedUserConfig;
 import com.pdev.spacetime.controller.request.MemoryRequest;
 import com.pdev.spacetime.dto.MemoryDto;
 import com.pdev.spacetime.repository.MemoryRepository;
@@ -28,7 +29,7 @@ public class MemoryController {
 
     @GetMapping("/memories")
     public List<MemoryDto> findAll() {
-        return service.findMemories();
+        return service.findMemoriesByUser();
     }
 
     @PostMapping("/memories")
@@ -46,7 +47,6 @@ public class MemoryController {
             service.saveMemory(request);
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
             ResponseEntity.internalServerError().build();
         }
 

@@ -1,5 +1,6 @@
 package com.pdev.spacetime.service;
 
+import com.pdev.spacetime.config.LoggedUserConfig;
 import com.pdev.spacetime.controller.request.MemoryRequest;
 import com.pdev.spacetime.dto.MemoryDto;
 import com.pdev.spacetime.entity.Memory;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class MemoryService {
 
     private final MemoryRepository memoryRepository;
+    private final LoggedUserConfig loggedUserConfig;
 
     @Transactional
     public Optional<MemoryDto> findMemory(Long id) {
@@ -33,8 +35,8 @@ public class MemoryService {
     }
 
     @Transactional
-    public List<MemoryDto> findMemories() {
-        List<Memory> memories = memoryRepository.findAll();
+    public List<MemoryDto> findMemoriesByUser() {
+        List<Memory> memories = memoryRepository.findByUserOrIsPublicTrue(new User(loggedUserConfig.loggedUser().getId()));
 
         return memories.stream()
                 .map(MemoryDto::toDto)
@@ -49,9 +51,7 @@ public class MemoryService {
         memory.setPublic(memoryRequest.isPublic());
         memory.setCreatedAt(LocalDateTime.now());
         memory.setCoverImage(memoryRequest.getImage());
-
-        // receber o usuario dinamicamente
-        memory.setUser(new User(2L));
+        memory.setUser(new User(loggedUserConfig.loggedUser().getId()));
 
         memoryRepository.save(memory);
     }
