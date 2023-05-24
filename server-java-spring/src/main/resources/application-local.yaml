@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 3333
 
 spring:
 
@@ -12,3 +12,9 @@ spring:
     username: postgres
     password: postgres
     driver-class: org.postgresql.Driver
+
+application-properties:
+  gitHubClientId: 61c96d8482becb4264d8
+  gitHubClientSecret: c115d1f22ad138115b538f6c250b53efee884614
+  jwtSecret: paneladev
+
