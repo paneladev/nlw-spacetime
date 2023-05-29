@@ -12,23 +12,32 @@ export function NewMemoryForm() {
 
   async function handleCreateMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const fileToUpload = formData.get('coverUrl')
-    let coverUrl = ''
-    if (fileToUpload) {
-      const uploadFormData = new FormData()
-      uploadFormData.set('file', fileToUpload)
-      const uploadResponse = await api.post('/upload', uploadFormData)
-      console.log(uploadResponse.data)
-      coverUrl = uploadResponse.data.fileUrl
-    }
 
     const token = Cookie.get('token')
+
+    const formData = new FormData(event.currentTarget)
+    const fileToUpload = formData.get('coverUrl')
+
+    let memoryId
+    if (fileToUpload?.name) {
+      const uploadFormData = new FormData()
+      uploadFormData.set('file', fileToUpload)
+      const uploadResponse = await api.post(
+        '/memories/upload',
+        uploadFormData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      memoryId = uploadResponse.data
+    }
 
     await api.post(
       '/memories',
       {
-        coverUrl,
+        memoryId,
         content: formData.get('content'),
         isPublic: formData.get('isPublic'),
       },

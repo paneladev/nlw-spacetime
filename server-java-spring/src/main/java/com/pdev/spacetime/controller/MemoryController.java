@@ -1,9 +1,7 @@
 package com.pdev.spacetime.controller;
 
-import com.pdev.spacetime.config.LoggedUserConfig;
 import com.pdev.spacetime.controller.request.MemoryRequest;
 import com.pdev.spacetime.dto.MemoryDto;
-import com.pdev.spacetime.repository.MemoryRepository;
 import com.pdev.spacetime.service.MemoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,24 +30,23 @@ public class MemoryController {
         return service.findMemoriesByUser();
     }
 
-    @PostMapping("/memories")
-    public ResponseEntity<Void> saveMemory(@RequestParam MultipartFile file, @RequestParam String content, @RequestParam boolean isPublic) {
+    @PostMapping("/memories/upload")
+    public ResponseEntity<Long> saveMemoryUpload(@RequestBody MultipartFile file) {
         try {
-
-            MemoryRequest request = new MemoryRequest();
-            request.setContent(content);
-            request.setPublic(isPublic);
-
-            if(Objects.nonNull(file.getOriginalFilename())) {
-                request.setImage(file.getBytes());
+            if (Objects.nonNull(file.getOriginalFilename())) {
+                Long aLong = service.saveMemoryImage(file.getBytes());
+                return ResponseEntity.ok(aLong);
             }
-
-            service.saveMemory(request);
-
         } catch (IOException e) {
-            ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError().build();
         }
+        return ResponseEntity.notFound().build();
+    }
 
+
+    @PostMapping("/memories")
+    public ResponseEntity<Void> saveMemory(@RequestBody MemoryRequest memoryRequest) {
+        service.saveOrUpdateMemory(memoryRequest);
         return ResponseEntity.ok().build();
     }
 }
