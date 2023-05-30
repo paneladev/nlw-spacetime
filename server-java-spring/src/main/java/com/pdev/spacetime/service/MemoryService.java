@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,16 +44,40 @@ public class MemoryService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public void saveMemory(MemoryRequest memoryRequest) {
+    public Long saveMemoryImage(byte[] image) {
         Memory memory = new Memory();
-        memory.setContent(memoryRequest.getContent());
-        //memory.setCoverUrl(memoryRequest.getCoverUrl());
-        memory.setPublic(memoryRequest.isPublic());
+        memory.setCoverImage(image);
         memory.setCreatedAt(LocalDateTime.now());
-        memory.setCoverImage(memoryRequest.getImage());
         memory.setUser(new User(loggedUserConfig.loggedUser().getId()));
 
+        return memoryRepository.save(memory).getId();
+    }
+
+    @Transactional
+    public void saveOrUpdateMemory(MemoryRequest memoryRequest) {
+        if (Objects.nonNull(memoryRequest.getMemoryId())) {
+            updateMemory(memoryRequest);
+        } else {
+            saveMemory(memoryRequest);
+        }
+    }
+
+    private void saveMemory(MemoryRequest memoryRequest) {
+        Memory memory = new Memory();
+        memory.setContent(memoryRequest.getContent());
+        memory.setPublic(memoryRequest.isPublic());
+        memory.setCreatedAt(LocalDateTime.now());
+        memory.setUser(new User(loggedUserConfig.loggedUser().getId()));
         memoryRepository.save(memory);
+    }
+
+    private void updateMemory(MemoryRequest memoryRequest) {
+        Optional<Memory> optMemory = memoryRepository.findById(memoryRequest.getMemoryId());
+        if (optMemory.isPresent()) {
+            Memory memory = optMemory.get();
+            memory.setContent(memoryRequest.getContent());
+            memory.setPublic(memoryRequest.isPublic());
+            memoryRepository.save(memory);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.pdev.spacetime.controller.request;
+package com.pdev.spacetime.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MemoryRequest {
 
-    private Long memoryId;
     private String content;
     private boolean isPublic;
 }

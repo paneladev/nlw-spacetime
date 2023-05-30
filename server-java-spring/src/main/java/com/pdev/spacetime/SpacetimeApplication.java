@@ -8,8 +8,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class SpacetimeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpacetimeApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpacetimeApplication.class, args);
+    }
 
 }
